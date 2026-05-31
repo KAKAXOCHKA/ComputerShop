@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Orders — NEXCORE</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="container nav-inner">
+    <div class="logo" onclick="location.href='index.html'">NEX<span>CORE</span></div>
+    <div class="nav-menu">
+      <a href="index.html" class="nav-item">Home</a>
+      <a href="shop.html" class="nav-item">Shop</a>
+      <a href="orders.html" class="nav-item active">My Orders</a>
+    </div>
+    <div class="nav-right">
+      <button class="btn btn-outline" id="auth-btn" onclick="location.href='index.html'">Login</button>
+      <button class="btn btn-ghost hidden" id="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+  <div class="container">
+    
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1 class="page-title">MY ORDERS</h1>
+      <p class="page-subtitle">Track and manage your orders</p>
+    </div>
+
+    <!-- Track Order (for guests) -->
+    <div id="track-order-section" class="card mb-4">
+      <h3 class="card-title">Track Order</h3>
+      <p class="text-muted">Don't have an account? Track your order using order number and email.</p>
+      <form id="track-order-form" class="form-inline">
+        <input type="text" id="track-number" placeholder="Order Number (e.g., NC202601011234)" required>
+        <input type="email" id="track-email" placeholder="Email Address" required>
+        <button type="submit" class="btn btn-red">Track Order</button>
+      </form>
+      <div id="track-result" class="hidden mt-3"></div>
+    </div>
+
+    <!-- My Orders List (for logged-in users) -->
+    <div id="orders-list-section" class="hidden">
+      <div id="orders-grid"></div>
+      <div id="no-orders" class="empty-state hidden">
+        <div class="empty-icon">📦</div>
+        <h3>No Orders Yet</h3>
+        <p>You haven't placed any orders yet.</p>
+        <button class="btn btn-red" onclick="location.href='shop.html'">Start Shopping</button>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- Order Details Modal -->
+<div id="order-modal" class="modal hidden">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="modal-title">Order Details</h3>
+      <button class="modal-close" onclick="closeOrderModal()">✕</button>
+    </div>
+    <div class="modal-body" id="order-details"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="js/orders.js"></script>
+</body>
+</html>
