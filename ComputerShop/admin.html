@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — NEXCORE</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+<style>
+:root {
+  --bg: #0c0c0c; --bg2: #111; --bg3: #181818; --border: #2a2a2a; --border2: #333;
+  --accent: #ff3c3c; --text: #f5f5f5; --text2: #999; --text3: #555;
+  --ff-head: 'Bebas Neue', sans-serif; --ff-body: 'Manrope', sans-serif;
+}
+body { font-family: var(--ff-body); background: var(--bg); color: var(--text); margin: 0; min-height: 100vh; }
+.topbar { background: #080808; border-bottom: 1px solid var(--border); padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; }
+.logo { font-family: var(--ff-head); font-size: 22px; letter-spacing: .12em; cursor: pointer; }
+.logo span { color: var(--accent); }
+.admin-wrap { display: flex; min-height: calc(100vh - 52px); }
+.admin-aside {
+  width: 240px; background: var(--bg2); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+}
+.aside-head { padding: 20px; border-bottom: 1px solid var(--border); }
+.aside-head-title { font-family: var(--ff-head); font-size: 18px; letter-spacing: .08em; }
+.aside-head-sub { font-size: 11px; color: var(--text3); margin-top: 4px; }
+.aside-nav { flex: 1; padding: 12px 0; }
+.aside-section { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text3); padding: 14px 20px 6px; }
+.aside-item {
+  display: flex; align-items: center; gap: 10px; padding: 11px 20px; cursor: pointer;
+  color: var(--text2); font-size: 13px; font-weight: 600;
+}
+.aside-item:hover { color: var(--text); background: rgba(255,255,255,.03); }
+.aside-item.active { color: var(--text); background: rgba(255,60,60,.07); border-left: 2px solid var(--accent); }
+.aside-bottom { padding: 16px 20px; border-top: 1px solid var(--border); }
+.admin-main { flex: 1; padding: 32px 36px; }
+.admin-panel { display: none; }
+.admin-panel.active { display: block; }
+.panel-head { margin-bottom: 28px; }
+.panel-title { font-family: var(--ff-head); font-size: 36px; letter-spacing: .06em; }
+.panel-sub { font-size: 14px; color: var(--text3); margin-top: 4px; }
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); margin-bottom: 28px; }
+.kpi { background: var(--bg2); padding: 22px 24px; }
+.kpi-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; }
+.kpi-val { font-family: var(--ff-head); font-size: 36px; letter-spacing: .04em; }
+.table-wrap { background: var(--bg2); border: 1px solid var(--border); overflow: hidden; }
+.tbl-head, .tbl-row { display: grid; align-items: center; padding: 14px 18px; font-size: 13px; border-bottom: 1px solid var(--border); }
+.tbl-head { background: var(--bg3); font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text3); }
+.tbl-row:last-child { border-bottom: none; }
+.tbl-orders { grid-template-columns: 100px 1fr 1fr 140px 100px 160px; gap: 8px; }
+.tbl-products { grid-template-columns: 50px 1fr 90px 90px 70px 140px; gap: 8px; }
+.tbl-btn { background: none; border: 1px solid var(--border); color: var(--text3); font-size: 11px; padding: 4px 8px; cursor: pointer; margin-right: 4px; border-radius: 2px; }
+.tbl-btn:hover { border-color: var(--accent); color: var(--accent); }
+.admin-form { background: var(--bg2); border: 1px solid var(--border); padding: 28px; max-width: 720px; }
+.admin-form-title { font-family: var(--ff-head); font-size: 20px; letter-spacing: .06em; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-group { margin-bottom: 18px; }
+label { display: block; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text2); margin-bottom: 6px; }
+input, select, textarea { width: 100%; box-sizing: border-box; background: #1a1a1a; border: 1px solid var(--border2); color: var(--text); padding: 12px 14px; font-family: var(--ff-body); font-size: 14px; border-radius: 2px; }
+.notif-item { display: flex; gap: 14px; padding: 18px; border: 1px solid var(--border); margin-bottom: 8px; background: var(--bg2); }
+.status { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; font-size: 11px; font-weight: 700; }
+.s-new { background: rgba(255,60,60,.1); color: var(--accent); }
+.s-work { background: rgba(255,184,0,.1); color: #ffb800; }
+.s-ship { background: rgba(61,220,132,.1); color: #3ddc84; }
+.s-done { background: rgba(61,220,132,.15); color: #3ddc84; }
+.err { color: var(--accent); font-size: 13px; margin-top: 8px; }
+.ok { color: #3ddc84; font-size: 13px; margin-top: 8px; }
+@media (max-width: 900px) {
+  .admin-aside { display: none; }
+  .tbl-orders, .tbl-products { grid-template-columns: 1fr; }
+  .kpi-row { grid-template-columns: 1fr 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="logo" onclick="location.href='index.html'">NEX<span>CORE</span> <span style="font-size:12px;color:var(--text3);font-family:var(--ff-body);letter-spacing:0">Admin</span></div>
+  <div>
+    <button type="button" class="btn btn-outline" onclick="location.href='shop.html'">Shop</button>
+    <button type="button" class="btn btn-red" onclick="logoutAdmin()" style="margin-left:8px">Log out</button>
+  </div>
+</div>
+
+<div class="admin-wrap">
+  <aside class="admin-aside">
+    <div class="aside-head">
+      <div class="aside-head-title">NEXCORE</div>
+      <div class="aside-head-sub" id="admin-name-label">—</div>
+    </div>
+    <nav class="aside-nav">
+      <div class="aside-section">Menu</div>
+      <div class="aside-item active" data-panel="dashboard" onclick="adminPanel('dashboard', this)"><span>📊</span> Dashboard</div>
+      <div class="aside-item" data-panel="orders" onclick="adminPanel('orders', this)"><span>📦</span> Orders</div>
+      <div class="aside-item" data-panel="products" onclick="adminPanel('products', this)"><span>🖥️</span> Products</div>
+      <div class="aside-item" data-panel="add-product" onclick="adminPanel('add-product', this)"><span>➕</span> Add PC</div>
+      <div class="aside-item" data-panel="custom" onclick="adminPanel('custom', this)"><span>🛠️</span> Custom builds</div>
+    </nav>
+    <div class="aside-bottom">
+      <button type="button" class="btn btn-outline" style="width:100%;justify-content:center" onclick="location.href='index.html'">Back to site</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <div id="admin-dashboard" class="admin-panel active">
+      <div class="panel-head">
+        <div class="panel-title">DASHBOARD</div>
+        <div class="panel-sub">Store statistics from the database</div>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-label">Orders</div><div class="kpi-val" id="k-orders">0</div></div>
+        <div class="kpi"><div class="kpi-label">New</div><div class="kpi-val" id="k-new">0</div></div>
+        <div class="kpi"><div class="kpi-label">Products</div><div class="kpi-val" id="k-products">0</div></div>
+        <div class="kpi"><div class="kpi-label">Requests</div><div class="kpi-val" id="k-custom">0</div></div>
+      </div>
+      <div id="dash-recent"></div>
+    </div>
+
+    <div id="admin-orders" class="admin-panel">
+      <div class="panel-head">
+        <div class="panel-title">ORDERS</div>
+        <div class="panel-sub">Statuses: new → processing → shipped → delivered</div>
+      </div>
+      <div class="table-wrap">
+        <div class="tbl-head tbl-orders"><span>#</span><span>Customer</span><span>Product</span><span>Total</span><span>Status</span><span>Actions</span></div>
+        <div id="orders-tbody"></div>
+      </div>
+    </div>
+
+    <div id="admin-products" class="admin-panel">
+      <div class="panel-head" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">
+        <div>
+          <div class="panel-title">PRODUCTS</div>
+          <div class="panel-sub">Catalog (USD as in database)</div>
+        </div>
+        <button type="button" class="btn btn-red" onclick="adminPanel('add-product')">+ Add</button>
+      </div>
+      <div class="table-wrap">
+        <div class="tbl-head tbl-products"><span>ID</span><span>Name</span><span>Price</span><span>Type</span><span>Visible</span><span>Actions</span></div>
+        <div id="products-tbody"></div>
+      </div>
+    </div>
+
+    <div id="admin-add-product" class="admin-panel">
+      <div class="panel-head">
+        <div class="panel-title">NEW PRODUCT</div>
+        <div class="panel-sub">Saved to products and product_images</div>
+      </div>
+      <div class="admin-form">
+        <div class="admin-form-title">Basics</div>
+        <div class="form-row">
+          <div class="form-group"><label>Name *</label><input id="ap-name" placeholder="NEXCORE PLASMA X"></div>
+          <div class="form-group"><label>Type *</label><select id="ap-type"><option>Gaming</option><option>Professional</option><option>Streaming</option><option>Workstation</option></select></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Price (USD) *</label><input id="ap-price" type="number" step="0.01" placeholder="1999"></div>
+          <div class="form-group"><label>Old price (USD)</label><input id="ap-old" type="number" step="0.01" placeholder=""></div>
+        </div>
+        <div class="form-group"><label>Primary image URL</label><input id="ap-image" placeholder="https://... (host image and paste link)"></div>
+        <div class="admin-form-title" style="margin-top:8px">Specifications</div>
+        <div class="form-row">
+          <div class="form-group"><label>CPU *</label><input id="ap-cpu" placeholder="Intel Core i9-14900K"></div>
+          <div class="form-group"><label>GPU *</label><input id="ap-gpu" placeholder="RTX 4080 16GB"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>RAM *</label><input id="ap-ram" placeholder="32 GB DDR5"></div>
+          <div class="form-group"><label>Storage *</label><input id="ap-ssd" placeholder="2TB NVMe SSD"></div>
+        </div>
+        <div class="form-group"><label>Description</label><textarea id="ap-desc" rows="3"></textarea></div>
+        <div class="form-group"><label>Badge</label><select id="ap-badge"><option value="">—</option><option value="hot">hot</option><option value="new">new</option><option value="sale">sale</option></select></div>
+        <div id="ap-msg" class="hidden"></div>
+        <button type="button" class="btn btn-red" onclick="submitAddProduct()">Save to catalog</button>
+      </div>
+    </div>
+
+    <div id="admin-custom" class="admin-panel">
+      <div class="panel-head">
+        <div class="panel-title">REQUESTS</div>
+        <div class="panel-sub">custom_requests table</div>
+      </div>
+      <div id="custom-list"></div>
+    </div>
+  </main>
+</div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>
